@@ -6,3 +6,17 @@ spring:
     url: jdbc:h2:/var/lib/barointern9
     username: sa
     password:
+  h2:
+    console:
+      enabled: true
+  jpa:
+    open-in-view: false
+    show_sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  output:
+    ansi:
+      enabled: always
