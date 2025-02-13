@@ -1,5 +1,6 @@
 package com.sparta.barointern9.jwt;
 
+import com.sparta.barointern9.dto.response.TokenResponseDto;
 import com.sparta.barointern9.exception.CustomApiException;
 import com.sparta.barointern9.exception.ErrorCode;
 import io.jsonwebtoken.*;
@@ -76,5 +77,13 @@ public class JwtUtil {
             return bearerToken.substring(BEARER_PREFIX.length());
         }
         return null;
+    }
+
+    public TokenResponseDto generateToken(String username) {
+        return new TokenResponseDto(
+                BEARER_PREFIX,
+                generateAccessToken(username),
+                generateRefreshToken(username)
+        );
     }
 }
