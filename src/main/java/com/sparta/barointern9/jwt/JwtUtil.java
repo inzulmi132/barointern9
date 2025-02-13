@@ -4,8 +4,10 @@ import com.sparta.barointern9.exception.CustomApiException;
 import com.sparta.barointern9.exception.ErrorCode;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.security.Key;
 import java.util.Date;
@@ -13,6 +15,8 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
+    public static final String ACCESS_TOKEN_HEADER = "Authorization";
+    public static final String BEARER_PREFIX = "Bearer ";
     public static final long ACCESS_TOKEN_EXPIRATION = 1000 * 60 * 30; // 30분
     public static final long REFRESH_TOKEN_EXPIRATION = 1000 * 60 * 60 * 24 * 3; // 3일
 
@@ -40,13 +44,12 @@ public class JwtUtil {
                 .compact();
     }
 
-    public boolean validateToken(String token) {
+    public void validateToken(String token) {
         try {
             Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
-            return true;
         } catch(SecurityException | MalformedJwtException e) {
             throw new CustomApiException(ErrorCode.INVALID_JWT_SIGN);
         } catch(ExpiredJwtException e) {
@@ -65,5 +68,13 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public String getAccessTokenFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader(ACCESS_TOKEN_HEADER);
+        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(BEARER_PREFIX.length());
+        }
+        return null;
     }
 }
