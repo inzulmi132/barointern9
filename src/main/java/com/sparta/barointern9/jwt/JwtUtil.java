@@ -57,4 +57,13 @@ public class JwtUtil {
             throw new CustomApiException(ErrorCode.WRONG_JWT_TOKEN);
         }
     }
+
+    public String getSubjectFromToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
 }
