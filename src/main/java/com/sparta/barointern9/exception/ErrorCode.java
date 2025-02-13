@@ -14,7 +14,7 @@ public enum ErrorCode {
     WRONG_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "잘못된 JWT 토큰 입니다."),
     EXPIRED_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 JWT 토큰 입니다."),
 
-    // userDetails
+    // user
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 회원을 찾을 수 없습니다."),
     ;
 

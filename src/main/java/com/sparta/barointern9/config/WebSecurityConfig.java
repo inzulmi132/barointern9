@@ -3,6 +3,7 @@ package com.sparta.barointern9.config;
 import com.sparta.barointern9.filter.CustomAuthenticationFilter;
 import com.sparta.barointern9.filter.CustomAuthorizationFilter;
 import com.sparta.barointern9.jwt.JwtUtil;
+import com.sparta.barointern9.service.AuthorityService;
 import com.sparta.barointern9.service.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +26,7 @@ public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthenticationConfiguration configuration;
+    private final AuthorityService authorityService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -33,7 +35,7 @@ public class WebSecurityConfig {
 
     @Bean
     CustomAuthorizationFilter customAuthorizationFilter() {
-        return new CustomAuthorizationFilter(jwtUtil, userDetailsService);
+        return new CustomAuthorizationFilter(jwtUtil, userDetailsService, authorityService);
     }
 
     @Bean
