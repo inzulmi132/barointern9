@@ -1,6 +1,8 @@
 package com.sparta.barointern9.service;
 
+import com.sparta.barointern9.entity.Authority;
 import com.sparta.barointern9.entity.User;
+import com.sparta.barointern9.enums.UserRole;
 import com.sparta.barointern9.exception.CustomApiException;
 import com.sparta.barointern9.exception.ErrorCode;
 import com.sparta.barointern9.repository.AuthorityRepository;
@@ -27,5 +29,14 @@ public class AuthorityService {
         authorityRepository.findAllByUser(user)
                 .forEach(authority -> authorities.add(authority::toString));
         return authorities;
+    }
+
+    public Authority createAuthority(User user, UserRole userRole) {
+        Authority authority = Authority.builder()
+                .user(user)
+                .userRole(userRole)
+                .build();
+
+        return authorityRepository.save(authority);
     }
 }

@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 @Getter
 @RequiredArgsConstructor
 public enum ErrorCode {
-
     // jwt
     INVALID_JWT_SIGN(HttpStatus.UNAUTHORIZED, "유효하지 않는 JWT 서명 입니다."),
     UNSUPPORTED_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "지원되지 않는 JWT 토큰 입니다."),
@@ -16,6 +15,7 @@ public enum ErrorCode {
 
     // user
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 회원을 찾을 수 없습니다."),
+    ALREADY_EXIST_USERNAME(HttpStatus.CONFLICT, "이미 가입된 계정 명 입니다."),
     ;
 
     private final HttpStatus status;

@@ -1,6 +1,6 @@
 package com.sparta.barointern9.entity;
 
-import com.sparta.barointern9.enums.AuthorityName;
+import com.sparta.barointern9.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,5 +21,5 @@ public class Authority {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private AuthorityName authorityName;
+    private UserRole userRole;
 }

@@ -1,6 +1,6 @@
 package com.sparta.barointern9.enums;
 
-public enum AuthorityName {
+public enum UserRole {
     ROLE_USER,
     ROLE_ADMIN,
 }
