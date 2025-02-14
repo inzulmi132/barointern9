@@ -2,7 +2,6 @@ package com.sparta.barointern9.controller;
 
 import com.sparta.barointern9.dto.request.RefreshRequestDto;
 import com.sparta.barointern9.dto.request.SignRequestDto;
-import com.sparta.barointern9.dto.request.SignoutRequestDto;
 import com.sparta.barointern9.dto.request.SignupRequestDto;
 import com.sparta.barointern9.dto.response.SignupResponseDto;
 import com.sparta.barointern9.dto.response.TokenResponseDto;
@@ -10,6 +9,7 @@ import com.sparta.barointern9.exception.CustomApiException;
 import com.sparta.barointern9.exception.CustomErrorResponseDto;
 import com.sparta.barointern9.exception.ErrorCode;
 import com.sparta.barointern9.service.UserService;
+import com.sparta.barointern9.userdetails.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -63,24 +64,27 @@ public class UserController {
 
     @DeleteMapping("/signoff")
     @Operation(summary = "회원탈퇴", description = "유저가 회원탈퇴 하는 API")
-    @Parameter(name = "username", description = "계정 명")
-    @Parameter(name = "password", description = "계정 비밀번호")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "204",
                     description = "회원탈퇴 성공"
             ),
             @ApiResponse(
-                    responseCode = "400",
-                    description = "계정 명 또는 비밀번호가 잘못되었습니다.",
+                    responseCode = "401",
+                    description = """
+                        1. 유효하지 않는 JWT 서명 입니다.
+                        2. 지원되지 않는 JWT 토큰 입니다.
+                        3. 잘못된 JWT 토큰 입니다.
+                        4. 만료된 JWT 토큰 입니다.
+                        """,
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = CustomErrorResponseDto.class)
                     )
             )
     })
-    public ResponseEntity<Void> signoff(@RequestBody SignoutRequestDto requestDto) {
-        userService.signoff(requestDto);
+    public ResponseEntity<Void> signoff(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        userService.signoff(userDetails.getUser());
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();

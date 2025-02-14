@@ -39,4 +39,8 @@ public class AuthorityService {
 
         return authorityRepository.save(authority);
     }
+
+    public void deleteAuthorityByUser(User user) {
+        authorityRepository.deleteAllByUser(user);
+    }
 }
