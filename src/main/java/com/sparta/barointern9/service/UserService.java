@@ -41,7 +41,7 @@ public class UserService {
         return new SignupResponseDto(user, List.of(authority));
     }
 
-    public void signout(SignoutRequestDto requestDto) {
+    public void signoff(SignoutRequestDto requestDto) {
         User user = userRepository.findByUsername(requestDto.getUsername())
                 .orElseThrow(() -> new CustomApiException(ErrorCode.USER_NOT_FOUND));
         if(!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {

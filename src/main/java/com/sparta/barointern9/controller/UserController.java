@@ -61,7 +61,7 @@ public class UserController {
                 .body(userService.signup(requestDto));
     }
 
-    @DeleteMapping("/signout")
+    @DeleteMapping("/signoff")
     @Operation(summary = "회원탈퇴", description = "유저가 회원탈퇴 하는 API")
     @Parameter(name = "username", description = "계정 명")
     @Parameter(name = "password", description = "계정 비밀번호")
@@ -79,8 +79,8 @@ public class UserController {
                     )
             )
     })
-    public ResponseEntity<Void> signout(@RequestBody SignoutRequestDto requestDto) {
-        userService.signout(requestDto);
+    public ResponseEntity<Void> signoff(@RequestBody SignoutRequestDto requestDto) {
+        userService.signoff(requestDto);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
