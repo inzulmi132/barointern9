@@ -81,7 +81,7 @@ public class JwtUtil {
         return null;
     }
 
-    public TokenResponseDto generateToken(String username) {
+    public TokenResponseDto generateTokens(String username) {
         return new TokenResponseDto(
                 BEARER_PREFIX,
                 generateAccessToken(username),
