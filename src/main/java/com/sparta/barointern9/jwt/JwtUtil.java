@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 
 @Component
@@ -24,7 +25,8 @@ public class JwtUtil {
     private final Key key;
 
     public JwtUtil(@Value("${jwt.secret-key}") String secretKey) {
-        this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
+        byte[] bytes = Base64.getDecoder().decode(secretKey);
+        key = Keys.hmacShaKeyFor(bytes);
     }
 
     public String generateAccessToken(String subject) {
