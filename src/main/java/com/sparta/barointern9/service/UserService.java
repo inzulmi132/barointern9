@@ -1,7 +1,6 @@
 package com.sparta.barointern9.service;
 
 import com.sparta.barointern9.dto.request.RefreshRequestDto;
-import com.sparta.barointern9.dto.request.SignoutRequestDto;
 import com.sparta.barointern9.dto.request.SignupRequestDto;
 import com.sparta.barointern9.dto.response.SignupResponseDto;
 import com.sparta.barointern9.dto.response.TokenResponseDto;
@@ -15,6 +14,7 @@ import com.sparta.barointern9.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -41,13 +41,9 @@ public class UserService {
         return new SignupResponseDto(user, List.of(authority));
     }
 
-    public void signout(SignoutRequestDto requestDto) {
-        User user = userRepository.findByUsername(requestDto.getUsername())
-                .orElseThrow(() -> new CustomApiException(ErrorCode.USER_NOT_FOUND));
-        if(!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
-            throw new CustomApiException(ErrorCode.INCORRECT_USERNAME_OR_PASSWORD);
-        }
-
+    @Transactional
+    public void signoff(User user) {
+        authorityService.deleteAuthorityByUser(user);
         userRepository.delete(user);
     }
 

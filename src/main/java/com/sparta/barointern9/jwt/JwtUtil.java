@@ -29,17 +29,14 @@ public class JwtUtil {
         key = Keys.hmacShaKeyFor(bytes);
     }
 
-    public String generateAccessToken(String subject) {
-        Date expiration = new Date(new Date().getTime() + ACCESS_TOKEN_EXPIRATION);
-        return Jwts.builder()
-                .setSubject(subject)
-                .setExpiration(expiration)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+    public TokenResponseDto generateTokens(String username) {
+        Date now = new Date();
+        String accessToken = generateToken(username, new Date(now.getTime() + ACCESS_TOKEN_EXPIRATION));
+        String refreshToken = generateToken(username, new Date(now.getTime() + REFRESH_TOKEN_EXPIRATION));
+        return new TokenResponseDto(BEARER_PREFIX, accessToken, refreshToken);
     }
 
-    public String generateRefreshToken(String subject) {
-        Date expiration = new Date(new Date().getTime() + REFRESH_TOKEN_EXPIRATION);
+    public String generateToken(String subject, Date expiration) {
         return Jwts.builder()
                 .setSubject(subject)
                 .setExpiration(expiration)
@@ -79,13 +76,5 @@ public class JwtUtil {
             return bearerToken.substring(BEARER_PREFIX.length());
         }
         return null;
-    }
-
-    public TokenResponseDto generateTokens(String username) {
-        return new TokenResponseDto(
-                BEARER_PREFIX,
-                generateAccessToken(username),
-                generateRefreshToken(username)
-        );
     }
 }
