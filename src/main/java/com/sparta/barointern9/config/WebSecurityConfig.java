@@ -58,6 +58,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(
                         auth -> auth
                                 .requestMatchers("/signup", "/sign").permitAll()
+                                .requestMatchers("/refresh").permitAll()
                                 .anyRequest().authenticated()
                 )
         ;

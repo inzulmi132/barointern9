@@ -1,13 +1,16 @@
 package com.sparta.barointern9.service;
 
+import com.sparta.barointern9.dto.request.RefreshRequestDto;
 import com.sparta.barointern9.dto.request.SignoutRequestDto;
 import com.sparta.barointern9.dto.request.SignupRequestDto;
 import com.sparta.barointern9.dto.response.SignupResponseDto;
+import com.sparta.barointern9.dto.response.TokenResponseDto;
 import com.sparta.barointern9.entity.Authority;
 import com.sparta.barointern9.entity.User;
 import com.sparta.barointern9.enums.UserRole;
 import com.sparta.barointern9.exception.CustomApiException;
 import com.sparta.barointern9.exception.ErrorCode;
+import com.sparta.barointern9.jwt.JwtUtil;
 import com.sparta.barointern9.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +25,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final AuthorityService authorityService;
+    private final JwtUtil jwtUtil;
 
     public SignupResponseDto signup(SignupRequestDto requestDto) {
         if(userRepository.existsByUsername(requestDto.getUsername())) {
@@ -45,5 +49,13 @@ public class UserService {
         }
 
         userRepository.delete(user);
+    }
+
+    public TokenResponseDto refresh(RefreshRequestDto requestDto) {
+        String refreshToken = requestDto.getRefreshToken();
+        jwtUtil.validateToken(refreshToken);
+
+        String username = jwtUtil.getSubjectFromToken(refreshToken);
+        return jwtUtil.generateTokens(username);
     }
 }

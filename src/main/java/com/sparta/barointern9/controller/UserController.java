@@ -1,8 +1,10 @@
 package com.sparta.barointern9.controller;
 
+import com.sparta.barointern9.dto.request.RefreshRequestDto;
 import com.sparta.barointern9.dto.request.SignoutRequestDto;
 import com.sparta.barointern9.dto.request.SignupRequestDto;
 import com.sparta.barointern9.dto.response.SignupResponseDto;
+import com.sparta.barointern9.dto.response.TokenResponseDto;
 import com.sparta.barointern9.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,5 +33,12 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<TokenResponseDto> refresh(@RequestBody RefreshRequestDto requestDto) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.refresh(requestDto));
     }
 }
