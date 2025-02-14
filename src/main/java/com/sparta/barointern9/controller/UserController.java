@@ -72,11 +72,11 @@ public class UserController {
             @ApiResponse(
                     responseCode = "401",
                     description = """
-                        1. 유효하지 않는 JWT 서명 입니다.
-                        2. 지원되지 않는 JWT 토큰 입니다.
-                        3. 잘못된 JWT 토큰 입니다.
-                        4. 만료된 JWT 토큰 입니다.
-                        """,
+                            1. 유효하지 않는 JWT 서명 입니다.
+                            2. 지원되지 않는 JWT 토큰 입니다.
+                            3. 잘못된 JWT 토큰 입니다.
+                            4. 만료된 JWT 토큰 입니다.
+                            """,
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = CustomErrorResponseDto.class)
@@ -105,11 +105,11 @@ public class UserController {
             @ApiResponse(
                     responseCode = "401",
                     description = """
-                        1. 유효하지 않는 JWT 서명 입니다.
-                        2. 지원되지 않는 JWT 토큰 입니다.
-                        3. 잘못된 JWT 토큰 입니다.
-                        4. 만료된 JWT 토큰 입니다.
-                        """,
+                            1. 유효하지 않는 JWT 서명 입니다.
+                            2. 지원되지 않는 JWT 토큰 입니다.
+                            3. 잘못된 JWT 토큰 입니다.
+                            4. 만료된 JWT 토큰 입니다.
+                            """,
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = CustomErrorResponseDto.class)
