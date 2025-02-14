@@ -3,12 +3,14 @@ package com.sparta.barointern9.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.barointern9.dto.request.SignRequestDto;
 import com.sparta.barointern9.dto.response.TokenResponseDto;
+import com.sparta.barointern9.exception.CustomApiException;
+import com.sparta.barointern9.exception.CustomErrorResponseDto;
+import com.sparta.barointern9.exception.ErrorCode;
 import com.sparta.barointern9.jwt.JwtUtil;
 import com.sparta.barointern9.userdetails.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -50,7 +52,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     }
 
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
+        CustomApiException exception = new CustomApiException(ErrorCode.INCORRECT_USERNAME_OR_PASSWORD);
+        CustomErrorResponseDto responseDto = new CustomErrorResponseDto(exception);
+
+        response.setStatus(exception.getErrorCode().getStatus().value());
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(new ObjectMapper().writeValueAsString(responseDto));
     }
 }

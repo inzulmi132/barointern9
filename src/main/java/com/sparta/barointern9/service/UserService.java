@@ -45,7 +45,7 @@ public class UserService {
         User user = userRepository.findByUsername(requestDto.getUsername())
                 .orElseThrow(() -> new CustomApiException(ErrorCode.USER_NOT_FOUND));
         if(!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
-            throw new CustomApiException(ErrorCode.INCORRECT_PASSWORD);
+            throw new CustomApiException(ErrorCode.INCORRECT_USERNAME_OR_PASSWORD);
         }
 
         userRepository.delete(user);
