@@ -16,6 +16,7 @@ public enum ErrorCode {
     // user
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 회원을 찾을 수 없습니다."),
     ALREADY_EXIST_USERNAME(HttpStatus.CONFLICT, "이미 가입된 계정 명 입니다."),
+    INCORRECT_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 잘못되었습니다."),
     ;
 
     private final HttpStatus status;

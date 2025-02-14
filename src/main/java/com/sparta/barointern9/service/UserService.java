@@ -1,5 +1,6 @@
 package com.sparta.barointern9.service;
 
+import com.sparta.barointern9.dto.request.SignoutRequestDto;
 import com.sparta.barointern9.dto.request.SignupRequestDto;
 import com.sparta.barointern9.dto.response.SignupResponseDto;
 import com.sparta.barointern9.entity.Authority;
@@ -34,5 +35,15 @@ public class UserService {
         Authority authority = authorityService.createAuthority(user, UserRole.ROLE_USER);
 
         return new SignupResponseDto(user, List.of(authority));
+    }
+
+    public void signout(SignoutRequestDto requestDto) {
+        User user = userRepository.findByUsername(requestDto.getUsername())
+                .orElseThrow(() -> new CustomApiException(ErrorCode.USER_NOT_FOUND));
+        if(!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
+            throw new CustomApiException(ErrorCode.INCORRECT_PASSWORD);
+        }
+
+        userRepository.delete(user);
     }
 }
