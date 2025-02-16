@@ -1,6 +1,6 @@
 ## EC2 배포
-### 배포 ip: 43.202.60.111
-### [Swagger Ui 접속 링크](http://43.202.60.111:8080/swagger-ui/index.html)
+### 배포 ip: 43.201.69.227
+### [Swagger Ui 접속 링크](http://43.201.69.227:8080/swagger-ui/index.html)
 
 ---
 ## Access / Refresh Token 발행 및 검증 시나리오
