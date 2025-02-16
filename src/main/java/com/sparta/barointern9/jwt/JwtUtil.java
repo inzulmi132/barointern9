@@ -4,6 +4,7 @@ import com.sparta.barointern9.dto.response.TokenResponseDto;
 import com.sparta.barointern9.exception.CustomApiException;
 import com.sparta.barointern9.exception.ErrorCode;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
@@ -54,7 +55,7 @@ public class JwtUtil {
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
-        } catch(SecurityException | MalformedJwtException e) {
+        } catch(SecurityException | MalformedJwtException | SignatureException e) {
             throw new CustomApiException(ErrorCode.INVALID_JWT_SIGN);
         } catch(ExpiredJwtException e) {
             throw new CustomApiException(ErrorCode.EXPIRED_JWT_TOKEN);
