@@ -1,8 +1,5 @@
 package com.sparta.barointern9.service;
 
-import com.sparta.barointern9.entity.Authority;
-import com.sparta.barointern9.entity.User;
-import com.sparta.barointern9.enums.UserRole;
 import com.sparta.barointern9.repository.AuthorityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,20 +17,7 @@ public class AuthorityService {
     public Collection<GrantedAuthority> getAuthorities(String username) {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorityRepository.findAllByUserUsername(username)
-                .forEach(authority -> authorities.add(authority::toString));
+                .forEach(authority -> authorities.add(authority.getUserRole()::toString));
         return authorities;
-    }
-
-    public Authority createAuthority(User user, UserRole userRole) {
-        Authority authority = Authority.builder()
-                .user(user)
-                .userRole(userRole)
-                .build();
-
-        return authorityRepository.save(authority);
-    }
-
-    public void deleteAuthorityByUser(User user) {
-        authorityRepository.deleteAllByUser(user);
     }
 }
