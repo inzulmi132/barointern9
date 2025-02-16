@@ -3,7 +3,7 @@ spring:
     name: barointern9
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:/var/lib/barointern9
+    url: jdbc:h2:mem:onboarding;MODE=MySQL
     username: sa
     password:
   h2:
