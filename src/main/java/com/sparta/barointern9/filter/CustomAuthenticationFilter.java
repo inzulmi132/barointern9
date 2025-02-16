@@ -47,7 +47,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) throws IOException {
         String username = ((UserDetailsImpl) auth.getPrincipal()).getUsername();
-        TokenResponseDto responseDto = jwtUtil.generateTokens(username);
+        TokenResponseDto responseDto = jwtUtil.generateTokenResponseDto(username);
         response.getWriter().write(new ObjectMapper().writeValueAsString(responseDto));
     }
 

@@ -58,6 +58,6 @@ public class UserService {
         jwtUtil.validateToken(refreshToken);
 
         String username = jwtUtil.getSubjectFromToken(refreshToken);
-        return jwtUtil.generateTokens(username);
+        return jwtUtil.generateTokenResponseDto(username);
     }
 }
