@@ -10,6 +10,7 @@ import com.sparta.barointern9.enums.UserRole;
 import com.sparta.barointern9.exception.CustomApiException;
 import com.sparta.barointern9.exception.ErrorCode;
 import com.sparta.barointern9.jwt.JwtUtil;
+import com.sparta.barointern9.repository.AuthorityRepository;
 import com.sparta.barointern9.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +25,7 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    private final AuthorityService authorityService;
+    private final AuthorityRepository authorityRepository;
     private final JwtUtil jwtUtil;
 
     public SignupResponseDto signup(SignupRequestDto requestDto) {
@@ -36,14 +37,19 @@ public class UserService {
         User user = requestDto.toUser(encodedPassword);
         user = userRepository.save(user);
 
-        Authority authority = authorityService.createAuthority(user, UserRole.ROLE_USER);
+        Authority authority = authorityRepository.save(
+                Authority.builder()
+                        .user(user)
+                        .userRole(UserRole.ROLE_USER)
+                        .build()
+        );
 
         return new SignupResponseDto(user, List.of(authority));
     }
 
     @Transactional
     public void signoff(User user) {
-        authorityService.deleteAuthorityByUser(user);
+        authorityRepository.deleteAllByUser(user);
         userRepository.delete(user);
     }
 
