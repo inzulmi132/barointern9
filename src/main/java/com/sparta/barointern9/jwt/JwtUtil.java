@@ -4,8 +4,10 @@ import com.sparta.barointern9.dto.response.TokenResponseDto;
 import com.sparta.barointern9.exception.CustomApiException;
 import com.sparta.barointern9.exception.ErrorCode;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -14,6 +16,7 @@ import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
+@Getter
 @Component
 public class JwtUtil {
 
@@ -23,8 +26,10 @@ public class JwtUtil {
     public static final long REFRESH_TOKEN_EXPIRATION = 1000 * 60 * 60 * 24 * 3; // 3일
 
     private final Key key;
+    private final String secretKey;
 
     public JwtUtil(@Value("${jwt.secret-key}") String secretKey) {
+        this.secretKey = secretKey;
         byte[] bytes = Base64.getDecoder().decode(secretKey);
         key = Keys.hmacShaKeyFor(bytes);
     }
@@ -50,7 +55,7 @@ public class JwtUtil {
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
-        } catch(SecurityException | MalformedJwtException e) {
+        } catch(SecurityException | MalformedJwtException | SignatureException e) {
             throw new CustomApiException(ErrorCode.INVALID_JWT_SIGN);
         } catch(ExpiredJwtException e) {
             throw new CustomApiException(ErrorCode.EXPIRED_JWT_TOKEN);
