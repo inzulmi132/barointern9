@@ -34,7 +34,7 @@ public class JwtUtil {
         key = Keys.hmacShaKeyFor(bytes);
     }
 
-    public TokenResponseDto generateTokens(String username) {
+    public TokenResponseDto generateTokenResponseDto(String username) {
         Date now = new Date();
         String accessToken = generateToken(username, new Date(now.getTime() + ACCESS_TOKEN_EXPIRATION));
         String refreshToken = generateToken(username, new Date(now.getTime() + REFRESH_TOKEN_EXPIRATION));

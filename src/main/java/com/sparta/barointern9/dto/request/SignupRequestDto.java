@@ -1,9 +1,13 @@
 package com.sparta.barointern9.dto.request;
 
 import com.sparta.barointern9.entity.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
+@AllArgsConstructor
 public class SignupRequestDto {
 
     private String username;
